@@ -21,7 +21,7 @@ export class InvoicesModel {
 
   static async getInvoiceById(id) {
     try {
-      const invoice = await Invoice.findByPk(id)
+      const invoice = await Invoice.findByPk(id, { include: [Product] })
       if (!invoice) return null
 
       return invoice
@@ -32,10 +32,13 @@ export class InvoicesModel {
     }
   }
 
-  static async createInvoice({ userId, invoiceData }) {
+  static async createInvoice({ userId, invoiceData, productIds }) {
     try {
       const invoice = await Invoice.create({ ...invoiceData, userId: userId })
       if (!invoice) return null
+      if (productIds && productIds.length > 0) {
+        await invoice.addProducts(productIds)
+      }
 
       return invoice
     } catch (error) {

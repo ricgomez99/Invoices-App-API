@@ -29,12 +29,13 @@ export class InvoicesController {
   }
 
   createInvoice = async (req, res) => {
-    const { userId } = req
-    const result = validateInvoiceSchema(req.body)
+    const { productIds, invoice, userId } = req.body
+    const result = validateInvoiceSchema(invoice)
     const invoiceData = result.data
     const createdInvoice = await this.invoicesModel.createInvoice({
       userId,
       invoiceData,
+      productIds,
     })
     if (!createdInvoice) {
       return res.status(400).json({ message: 'Unable to create invoice' })

@@ -30,7 +30,10 @@ export class ProductsController {
   createProduct = async (req, res) => {
     const result = validateProductSchema(req.body)
     const productData = result.data
-    const newProduct = await this.productsModel.createProduct({ productData })
+
+    const newProduct = await this.productsModel.createProduct({
+      productData,
+    })
     if (!newProduct) {
       return res.status(400).json({ message: 'Unable to create product' })
     }
