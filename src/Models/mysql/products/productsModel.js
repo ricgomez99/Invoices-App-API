@@ -45,7 +45,7 @@ export class ProductsModel {
       if (!id || !inputData) return null
       const newData = await Product.update(inputData, {
         where: {
-          productId: id,
+          id: id,
         },
       })
 
@@ -61,7 +61,7 @@ export class ProductsModel {
     try {
       const deletedProduct = await Product.destroy({
         where: {
-          productId: id,
+          id: id,
         },
       })
 

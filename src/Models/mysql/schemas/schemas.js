@@ -1,6 +1,8 @@
-import { DataTypes, ENUM, UUID } from 'sequelize'
+import { DataTypes, ENUM } from 'sequelize'
 import { sequelizeConnection } from '../db/connection.js'
 import crypto from 'node:crypto'
+
+const date = new Date().toISOString()
 
 export const User = sequelizeConnection.define(
   'user',
@@ -20,6 +22,12 @@ export const User = sequelizeConnection.define(
         min: 5,
         max: 12,
       },
+    },
+
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
 
     password: {
@@ -55,7 +63,7 @@ export const Invoice = sequelizeConnection.define(
     date: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
+      defaultValue: date,
     },
 
     subtotal: {
@@ -113,6 +121,28 @@ export const Product = sequelizeConnection.define(
   {
     sequelize: sequelizeConnection,
     modelName: 'Product',
+    timestamps: false,
+  }
+)
+
+export const Token = sequelizeConnection.define(
+  'token',
+  {
+    id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      unique: true,
+      primaryKey: true,
+      defaultValue: () => crypto.randomUUID(),
+    },
+
+    refresh: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+  },
+  {
     timestamps: false,
   }
 )

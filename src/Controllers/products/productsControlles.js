@@ -1,3 +1,8 @@
+import {
+  validateProductSchema,
+  validatePartialProductSchema,
+} from '../../Models/validations/productSchema.js'
+
 export class ProductsController {
   constructor({ productsModel }) {
     this.productsModel = productsModel
@@ -23,8 +28,12 @@ export class ProductsController {
   }
 
   createProduct = async (req, res) => {
-    const productData = req.body
-    const newProduct = await this.productsModel.createProduct({ productData })
+    const result = validateProductSchema(req.body)
+    const productData = result.data
+
+    const newProduct = await this.productsModel.createProduct({
+      productData,
+    })
     if (!newProduct) {
       return res.status(400).json({ message: 'Unable to create product' })
     }
@@ -33,7 +42,8 @@ export class ProductsController {
   }
 
   updateProduct = async (req, res) => {
-    const inputData = req.body
+    const result = validatePartialProductSchema(req.body)
+    const inputData = result.data
     const { id } = req.params
     const updatedProduct = await this.productsModel.updateProduct({
       id,
