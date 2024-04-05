@@ -1,4 +1,4 @@
-import { DataTypes, ENUM, UUID } from 'sequelize'
+import { DataTypes, ENUM } from 'sequelize'
 import { sequelizeConnection } from '../db/connection.js'
 import crypto from 'node:crypto'
 
@@ -20,6 +20,12 @@ export const User = sequelizeConnection.define(
         min: 5,
         max: 12,
       },
+    },
+
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
     },
 
     password: {
