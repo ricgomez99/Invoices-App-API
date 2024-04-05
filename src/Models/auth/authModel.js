@@ -6,10 +6,10 @@ import 'dotenv/config.js'
 export class AuthModel {
   static async login({ input }) {
     try {
-      const { username, password } = input
+      const { email, password } = input
       const user = await User.findOne({
         where: {
-          username: username,
+          email: email,
         },
       })
       const passwordMatch = await comparePassword(password, user?.password)
@@ -22,6 +22,24 @@ export class AuthModel {
       }
     }
   }
+
+  static async logout(token) {
+    try {
+      if (!token) return null
+      const deletedToken = await Token.destroy({
+        where: {
+          refresh: token,
+        },
+      })
+
+      return deletedToken
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message)
+      }
+    }
+  }
+
   static async refreshToken(refreshToken) {
     try {
       if (!refreshToken) return null
@@ -30,8 +48,8 @@ export class AuthModel {
           refresh: refreshToken,
         },
       })
-      console.log('token:', token.refresh)
-      const refresh = token.refresh
+
+      const { refresh } = token
       const decodedToken = jwt.verify(refresh, process.env.REFRESH_TOKEN)
       const userId = decodedToken.userId
 
@@ -45,7 +63,7 @@ export class AuthModel {
 
   static async createNewToken({ refresh }) {
     try {
-      const newAccessToken = await Token.create(refresh)
+      const newAccessToken = await Token.create({ refresh })
       if (!newAccessToken) return null
 
       return newAccessToken

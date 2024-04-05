@@ -2,6 +2,8 @@ import { DataTypes, ENUM } from 'sequelize'
 import { sequelizeConnection } from '../db/connection.js'
 import crypto from 'node:crypto'
 
+const date = new Date().toISOString()
+
 export const User = sequelizeConnection.define(
   'user',
   {
@@ -61,7 +63,7 @@ export const Invoice = sequelizeConnection.define(
     date: {
       type: DataTypes.STRING,
       allowNull: false,
-      defaultValue: DataTypes.NOW,
+      defaultValue: date,
     },
 
     subtotal: {

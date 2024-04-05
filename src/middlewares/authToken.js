@@ -1,10 +1,10 @@
-import { User } from '../Models/mysql/schemas/schemas'
+import { User } from '../Models/mysql/schemas/schemas.js'
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
 export const authToken = async (req, res, next) => {
   try {
-    const authHeader = req.headers['authentication']
+    const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
     if (token === null) return res.status(400)

@@ -27,6 +27,18 @@ export class AuthController {
     })
   }
 
+  logout = async (req, res) => {
+    const { token } = req.body
+    const deltedToken = await this.authModel.logout(token)
+    if (!deltedToken) {
+      return res
+        .status(400)
+        .json({ message: "Token doesn't exist, not able to logout" })
+    }
+
+    return res.status(202).json({ message: 'Token deleted, user logged-out' })
+  }
+
   refreshToken = async (req, res) => {
     const { refreshToken } = req.body
     const userId = await this.authModel.refreshToken(refreshToken)

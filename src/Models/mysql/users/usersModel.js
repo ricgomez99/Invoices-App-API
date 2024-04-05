@@ -1,10 +1,10 @@
-import { User } from '../schemas/schemas.js'
+import { User, Invoice } from '../schemas/schemas.js'
 import { saltGenerator } from './../../../utils/saltGenerator.js'
 
 export class UsersModel {
   static async getUsers() {
     try {
-      const users = await User.findAll()
+      const users = await User.findAll({ include: [Invoice] })
       if (users) {
         return users
       }

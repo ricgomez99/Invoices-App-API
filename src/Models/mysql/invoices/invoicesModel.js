@@ -1,9 +1,14 @@
-import { Invoice } from '../schemas/schemas.js'
+import { Invoice, Product, User } from '../schemas/schemas.js'
 
 export class InvoicesModel {
-  static async getInvoices() {
+  static async getInvoices(userId) {
     try {
-      const invoices = await Invoice.findAll()
+      const invoices = await Invoice.findAll({
+        where: {
+          userId: userId,
+        },
+        include: [Product],
+      })
       if (!invoices) return null
 
       return invoices
@@ -27,9 +32,9 @@ export class InvoicesModel {
     }
   }
 
-  static async createInvoice({ invoiceData }) {
+  static async createInvoice({ userId, invoiceData }) {
     try {
-      const invoice = await Invoice.create(invoiceData)
+      const invoice = await Invoice.create({ ...invoiceData, userId: userId })
       if (!invoice) return null
 
       return invoice

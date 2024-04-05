@@ -4,7 +4,6 @@ import { createUsersRouter } from './routes/users/usersRoutes.js'
 import { createProductsRouter } from './routes/products/productsRoutes.js'
 import { createInvoicesRouter } from './routes/invoices/invoicesRoutes.js'
 import { createAuthRouter } from './routes/authentication/authRouter.js'
-import { createRefreshAuthRouter } from './routes/authentication/authRefreshRouter.js'
 import 'dotenv/config'
 
 const app = express()

@@ -1,3 +1,8 @@
+import {
+  validateSchema,
+  validatePartialSchema,
+} from '../../Models/validations/userSchema.js'
+
 export class UsersController {
   constructor({ usersModel }) {
     this.usersModel = usersModel
@@ -26,8 +31,10 @@ export class UsersController {
   }
 
   createUser = async (req, res) => {
-    const input = req.body
-    const userCreated = await this.usersModel.createUser({ userData: input })
+    const result = validateSchema(req.body)
+    const userCreated = await this.usersModel.createUser({
+      userData: result.data,
+    })
 
     if (userCreated) {
       return res.status(202).json({ message: 'User created!' })
@@ -38,7 +45,8 @@ export class UsersController {
 
   updateUser = async (req, res) => {
     const { id } = req.params
-    const userData = req.body
+    const validation = validatePartialSchema(req.body)
+    const userData = validation.data
 
     const updatedUser = await this.usersModel.updateUser({ id, userData })
     if (!updatedUser) {

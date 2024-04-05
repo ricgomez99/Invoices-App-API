@@ -1,10 +1,16 @@
+import {
+  validateInvoiceSchema,
+  validatePartialInvoiceSchema,
+} from '../../Models/validations/invoiceSchema.js'
+
 export class InvoicesController {
   constructor({ invoicesModel }) {
     this.invoicesModel = invoicesModel
   }
 
   getInvoices = async (req, res) => {
-    const invoices = await this.invoicesModel.getInvoices()
+    const { userId } = req
+    const invoices = await this.invoicesModel.getInvoices(userId)
     if (!invoices) {
       return res.status(400).json({ message: 'Unable to get Invoices' })
     }
@@ -23,8 +29,11 @@ export class InvoicesController {
   }
 
   createInvoice = async (req, res) => {
-    const invoiceData = req.body
+    const { userId } = req
+    const result = validateInvoiceSchema(req.body)
+    const invoiceData = result.data
     const createdInvoice = await this.invoicesModel.createInvoice({
+      userId,
       invoiceData,
     })
     if (!createdInvoice) {
@@ -36,7 +45,8 @@ export class InvoicesController {
 
   updateInvoice = async (req, res) => {
     const { id } = req.params
-    const inputData = req.body
+    const result = validatePartialInvoiceSchema(req.body)
+    const inputData = result.data
 
     const updatedData = await this.invoicesModel.updateInvoice({
       id,
