@@ -123,6 +123,28 @@ export const Product = sequelizeConnection.define(
   }
 )
 
+export const Token = sequelizeConnection.define(
+  'token',
+  {
+    id: {
+      type: DataTypes.UUID,
+      allowNull: false,
+      unique: true,
+      primaryKey: true,
+      defaultValue: () => crypto.randomUUID(),
+    },
+
+    refresh: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+  },
+  {
+    timestamps: false,
+  }
+)
+
 const InvoiceProduct = sequelizeConnection.define(
   'InvoiceProduct',
   {

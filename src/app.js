@@ -3,6 +3,8 @@ import { sequelizeConnection } from './Models/mysql/db/connection.js'
 import { createUsersRouter } from './routes/users/usersRoutes.js'
 import { createProductsRouter } from './routes/products/productsRoutes.js'
 import { createInvoicesRouter } from './routes/invoices/invoicesRoutes.js'
+import { createAuthRouter } from './routes/authentication/authRouter.js'
+import { createRefreshAuthRouter } from './routes/authentication/authRefreshRouter.js'
 import 'dotenv/config'
 
 const app = express()
@@ -22,6 +24,7 @@ export const createApp = async ({
   usersModel,
   productsModel,
   invoicesModel,
+  authModel,
 }) => {
   await testConnection()
   app.get('/', (req, res) => {
@@ -35,6 +38,8 @@ export const createApp = async ({
   app.use('/users', createUsersRouter({ usersModel }))
   app.use('/products', createProductsRouter({ productsModel }))
   app.use('/invoices', createInvoicesRouter({ invoicesModel }))
+  app.use('/auth', createAuthRouter({ authModel }))
+  // app.use('/token', createRefreshAuthRouter({ authModel }))
 
   app.listen(port, () => {
     console.log(`App running on port: http://localhost:${port}`)
