@@ -5,6 +5,7 @@ import { createProductsRouter } from './routes/products/productsRoutes.js'
 import { createInvoicesRouter } from './routes/invoices/invoicesRoutes.js'
 import { createAuthRouter } from './routes/authentication/authRouter.js'
 import 'dotenv/config'
+import { corsMiddleware } from './middlewares/corsMiddleware.js'
 
 const app = express()
 const port = process.env.PORT ?? 3000
@@ -31,6 +32,7 @@ export const createApp = async ({
   })
 
   app.use(json())
+  app.use(corsMiddleware())
   app.disable('x-powered-by')
   app.options('*')
 
