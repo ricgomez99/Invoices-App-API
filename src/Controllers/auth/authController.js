@@ -14,6 +14,8 @@ export class AuthController {
     if (!output) {
       return res.status(400).json({ message: 'Not able to login user' })
     }
+    const { role } = output.dataValues
+    console.log(role)
 
     const { accessToken, refreshToken } = jwtTokens({ user: output })
     if (accessToken && refreshToken) {
@@ -24,6 +26,7 @@ export class AuthController {
       message: 'User logged-in',
       accessToken: accessToken,
       refreshToken: refreshToken,
+      role: role,
     })
   }
 
