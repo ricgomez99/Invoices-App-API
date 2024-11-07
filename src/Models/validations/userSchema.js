@@ -6,7 +6,7 @@ const User = z.object({
       invalid_type_error: 'username must be a string',
       required_error: 'username is required',
     })
-    .min(5),
+    .min(3),
   email: z
     .string({
       invalid_type_error: 'email must be a valid email',
