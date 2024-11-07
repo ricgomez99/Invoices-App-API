@@ -33,6 +33,7 @@ export class UsersController {
   createUser = async (req, res) => {
     const data = req.body
     const result = validateSchema(data)
+    console.log(result)
     const userCreated = await this.usersModel.createUser({
       userData: result.data,
     })
